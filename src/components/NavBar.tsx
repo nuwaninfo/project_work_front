@@ -1,15 +1,17 @@
-const NavBar = () => {
+import { FC } from "react"
+
+const NavBar: FC = () => {
   return (
     <div className="navbar bg-base-300">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">The ultimate web app</a>
+        <a className="text-xl btn btn-ghost">The ultimate web app</a>
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">
           <input
             type="text"
             placeholder="Search"
-            className="input input-bordered w-24 md:w-auto"
+            className="w-24 input input-bordered md:w-auto"
           />
         </div>
         <div className="dropdown dropdown-end">
