@@ -2,7 +2,7 @@ import { FC, useState } from "react"
 
 import Alert from "./Alert"
 import validator from "validator"
-import userService from "../services/userService"
+import userService from "../services/register"
 
 const Register: FC = () => {
   const [email, setEmail] = useState<string>("sameerpa2@yahoo.com")

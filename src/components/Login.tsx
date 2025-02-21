@@ -1,5 +1,5 @@
 import { FC, useState } from "react"
-import User from "../services/userService"
+import loginService from "../services/login"
 import { AxiosResponse } from "axios"
 import Alert from "./Alert"
 
@@ -9,9 +9,16 @@ const Login: FC = () => {
 
   const handleLogin = async () => {
     try {
-      const user = new User(email, password)
-      const res: AxiosResponse | undefined = await user.login()
-      console.log(res?.data)
+      console.log("ddddd")
+      const credentials = { email, password }
+      const user: AxiosResponse | undefined = await loginService.login(
+        credentials
+      )
+      //const res: AxiosResponse | undefined = await user.login()
+      console.log(user.data.token)
+
+      // store the token in local/browser storage
+      sessionStorage.setItem("token", user.data.token)
     } catch (e) {
       console.log(e)
     }
@@ -44,7 +51,6 @@ const Login: FC = () => {
             <button className="btn btn-primary" onClick={handleLogin}>
               Login
             </button>
-            <Alert />
           </div>
         </div>
       </div>
