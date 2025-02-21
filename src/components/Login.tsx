@@ -1,6 +1,7 @@
-import React, { FC, useState } from "react"
+import { FC, useState } from "react"
 import User from "../services/userService"
 import { AxiosResponse } from "axios"
+import Alert from "./Alert"
 
 const Login: FC = () => {
   const [email, setEmail] = useState<string>("sameerpa1@yahoo.com")
@@ -24,7 +25,7 @@ const Login: FC = () => {
           <label className="flex items-center gap-2 input input-bordered">
             Email
             <input
-              type="text"
+              type="email"
               className="grow"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -43,6 +44,7 @@ const Login: FC = () => {
             <button className="btn btn-primary" onClick={handleLogin}>
               Login
             </button>
+            <Alert />
           </div>
         </div>
       </div>

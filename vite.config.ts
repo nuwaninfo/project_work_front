@@ -11,6 +11,9 @@ export default defineConfig({
         changeOrigin: true,
       },
     },
+    watch: {
+      usePolling: true,
+    },
     port: 3000,
   },
 })
