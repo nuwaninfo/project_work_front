@@ -9,7 +9,6 @@ const Login: FC = () => {
 
   const handleLogin = async () => {
     try {
-      console.log("ddddd")
       const credentials = { email, password }
       const user: AxiosResponse | undefined = await loginService.login(
         credentials
@@ -18,7 +17,7 @@ const Login: FC = () => {
       console.log(user.data.token)
 
       // store the token in local/browser storage
-      sessionStorage.setItem("token", user.data.token)
+      localStorage.setItem("token", user.data.token)
     } catch (e) {
       console.log(e)
     }
