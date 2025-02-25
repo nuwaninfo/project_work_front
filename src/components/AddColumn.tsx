@@ -1,10 +1,51 @@
-const AddColumn = () => {
+interface IHandleClickProp {
+  handleAddCloumnCloseClick: () => void
+  handleAddCloumnAddClick: () => void
+  setColumnTitle: React.Dispatch<React.SetStateAction<string>>
+  columnTitle: string
+}
+
+const AddColumn: React.FC<IHandleClickProp> = ({
+  handleAddCloumnCloseClick,
+  handleAddCloumnAddClick,
+  columnTitle,
+  setColumnTitle,
+}) => {
   return (
     <div className="shadow-xl card bg-base-100 w-80">
       <div className="card-body">
-        <p>If a dog chews shoes whose shoes does he choose?</p>
+        <p>
+          <input
+            type="text"
+            value={columnTitle}
+            onChange={(e) => setColumnTitle(e.target.value)}
+            placeholder="Enter colum name"
+            className="w-full max-w-xs input input-bordered"
+          />
+        </p>
         <div className="justify-end card-actions">
-          <button className="btn btn-primary">Buy Now</button>
+          <button className="btn btn-primary" onClick={handleAddCloumnAddClick}>
+            Add column
+          </button>
+          <button
+            className="btn btn-square btn-outline"
+            onClick={handleAddCloumnCloseClick}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </div>
