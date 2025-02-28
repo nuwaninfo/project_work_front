@@ -48,6 +48,7 @@ const KanbanBoard = () => {
           // Ensure response.data.columns is an array before setting state
           if (response.data && Array.isArray(response.data.columns)) {
             setColumns(response.data.columns)
+            console.log("#####", response.data.columns)
           } else {
             console.error(
               "Invalid response format, expected an object with a 'columns' array:",
@@ -62,7 +63,6 @@ const KanbanBoard = () => {
       }
 
       fetchColumns()
-      console.log("#####", columns)
     } else {
       //navigate("/login")
     }
@@ -106,6 +106,7 @@ const KanbanBoard = () => {
     } catch (error) {
       console.error("Error during API call:", error)
     }
+    setShowAddColumnButton(true)
   }
 
   return (
