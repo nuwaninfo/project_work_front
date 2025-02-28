@@ -1,15 +1,15 @@
 interface IHandleClickProp {
   handleAddCloumnCloseClick: () => void
   handleAddCloumnAddClick: () => void
-  setColumnTitle: React.Dispatch<React.SetStateAction<string>>
-  columnTitle: string
+  setColumnName: React.Dispatch<React.SetStateAction<string>>
+  columnName: string
 }
 
 const AddColumn: React.FC<IHandleClickProp> = ({
   handleAddCloumnCloseClick,
   handleAddCloumnAddClick,
-  columnTitle,
-  setColumnTitle,
+  columnName,
+  setColumnName,
 }) => {
   return (
     <div className="shadow-xl card bg-base-100 w-80">
@@ -17,10 +17,11 @@ const AddColumn: React.FC<IHandleClickProp> = ({
         <p>
           <input
             type="text"
-            value={columnTitle}
-            onChange={(e) => setColumnTitle(e.target.value)}
-            placeholder="Enter colum name"
+            value={columnName}
+            onChange={(e) => setColumnName(e.target.value)}
+            placeholder="Enter column name"
             className="w-full max-w-xs input input-bordered"
+            name="columnName"
           />
         </p>
         <div className="justify-end card-actions">

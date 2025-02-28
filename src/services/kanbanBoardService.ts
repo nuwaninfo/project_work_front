@@ -3,6 +3,7 @@ const baseUrl: string = "/api/v1/board/saveColumnCount"
 interface ApiResponse {
   columnCount: number
 }
+
 let token: string | null = null
 
 const setToken = (newToken: string) => {

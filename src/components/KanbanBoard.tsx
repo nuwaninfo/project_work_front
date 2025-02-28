@@ -1,7 +1,8 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Column from "./Column"
 import AddColumn from "./AddColumn"
 import kanbanBoardService from "../services/kanbanBoardService"
+import columnService from "../services/column"
 
 import { AxiosResponse } from "axios"
 
@@ -9,6 +10,14 @@ interface ApiResponse {
   columnCount: number
 }
 
+interface ApiColumn {
+  _id: string
+  columnName: string
+}
+
+interface ApiColumnResponse {
+  columns: ApiColumn[]
+}
 const KanbanBoard = () => {
   // Get the column count of Kangan board
   const [columnCount, setColumnCount] = useState<number>(0)
@@ -16,8 +25,48 @@ const KanbanBoard = () => {
   // Show the Add column button intially when the board loads
   const [showAddColumnButton, setShowAddColumnButton] = useState<boolean>(true)
 
-  // Column title
-  const [columnTitle, setColumnTitle] = useState<string>("")
+  // Column name
+  const [columnName, setColumnName] = useState<string>("")
+
+  // List down columns
+  const [columns, setColumns] = useState<ApiColumn[]>([])
+
+  useEffect(() => {
+    // Get the token from local storage when the page loads
+    const token: string | null = window.localStorage.getItem("token")
+
+    if (token !== null) {
+      columnService.setToken(token)
+      kanbanBoardService.setToken(token)
+
+      // Fetch columns from the server
+      const fetchColumns = async () => {
+        try {
+          const response: AxiosResponse<ApiColumnResponse> =
+            await columnService.getAll()
+
+          // Ensure response.data.columns is an array before setting state
+          if (response.data && Array.isArray(response.data.columns)) {
+            setColumns(response.data.columns)
+          } else {
+            console.error(
+              "Invalid response format, expected an object with a 'columns' array:",
+              response.data
+            )
+            setColumns([]) // Ensure columns is always an array
+          }
+        } catch (error) {
+          console.error("Error fetching columns:", error)
+          setColumns([]) // Prevents 'map' errors
+        }
+      }
+
+      fetchColumns()
+      console.log("#####", columns)
+    } else {
+      //navigate("/login")
+    }
+  }, [])
 
   const handleClick = () => {
     // Hide addColumn button and show Add column card
@@ -29,7 +78,6 @@ const KanbanBoard = () => {
     setShowAddColumnButton(true)
   }
 
-  // Add the column to the board
   const handleAddCloumnAddClick = async () => {
     const newColumnCount = columnCount + 1
 
@@ -47,29 +95,45 @@ const KanbanBoard = () => {
     } catch (error) {
       console.error("Error during API call:", error)
     }
+
+    // Add the new column to the databae
+    try {
+      const newObj: { columnName: string } = { columnName: columnName }
+      const response: AxiosResponse<ApiColumnResponse> =
+        await columnService.create(newObj)
+      console.log(response.data)
+      setColumns(response.data.columns)
+    } catch (error) {
+      console.error("Error during API call:", error)
+    }
   }
 
   return (
     <div className="w-full h-screen p-6 shadow-xl card bg-base-100">
-      <div className="card-body">
-        <div className="card-actions">
-          {Array.from({ length: columnCount }, (_, index) => (
-            <Column key={index} columnTitle={columnTitle} />
-          ))}
+      <div className="flex gap-4 p-4 overflow-x-auto scrollbar-hide">
+        {Array.isArray(columns) && columns.length > 0 ? (
+          columns.map((column) => (
+            <Column key={column._id} columnName={column.columnName} />
+          ))
+        ) : (
+          <p>No columns found.</p>
+        )}
 
-          {showAddColumnButton ? (
-            <button className="btn btn-primary" onClick={handleClick}>
-              Add column
-            </button>
-          ) : (
-            <AddColumn
-              handleAddCloumnCloseClick={handleAddCloumnCloseClick}
-              handleAddCloumnAddClick={handleAddCloumnAddClick}
-              setColumnTitle={setColumnTitle}
-              columnTitle={columnTitle}
-            />
-          )}
-        </div>
+        {showAddColumnButton ? (
+          <button
+            className="w-64 min-w-[250px] flex-shrink-0 h-12 bg-blue-500 text-white rounded-lg shadow-lg flex items-center justify-center"
+            onClick={handleClick}
+          >
+            + Add column
+          </button>
+        ) : (
+          <AddColumn
+            handleAddCloumnCloseClick={handleAddCloumnCloseClick}
+            handleAddCloumnAddClick={handleAddCloumnAddClick}
+            setColumnName={setColumnName}
+            columnName={columnName}
+          />
+        )}
       </div>
     </div>
   )
