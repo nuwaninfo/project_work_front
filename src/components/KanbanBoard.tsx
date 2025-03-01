@@ -109,12 +109,32 @@ const KanbanBoard = () => {
     setShowAddColumnButton(true)
   }
 
+  // Delete a column
+  const handleDeleteColumn = async (id: string) => {
+    try {
+      const response = await columnService.deleteColumn(id)
+
+      if (response.data && Array.isArray(response.data.columns)) {
+        setColumns(response.data.columns)
+      } else {
+        console.error("Invalid response format:", response.data)
+      }
+    } catch (error) {
+      console.error("Error deleting column:", error)
+    }
+  }
+
   return (
     <div className="w-full h-screen p-6 shadow-xl card bg-base-100">
       <div className="flex gap-4 p-4 overflow-x-auto scrollbar-hide">
         {Array.isArray(columns) && columns.length > 0 ? (
           columns.map((column) => (
-            <Column key={column._id} columnName={column.columnName} />
+            <Column
+              key={column._id}
+              columnId={column._id}
+              columnName={column.columnName}
+              handleDeleteColumn={handleDeleteColumn}
+            />
           ))
         ) : (
           <p>No columns found.</p>

@@ -43,4 +43,16 @@ const getAll = async (): Promise<AxiosResponse<ApiColumnResponse>> => {
   return response
 }
 
-export default { create, getAll, setToken }
+const deleteColumn = async (id: string) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  const response: AxiosResponse<ApiColumnResponse> = await axios.delete(
+    `${baseUrl}/${id}`,
+    config
+  )
+  return response
+}
+
+export default { create, getAll, setToken, deleteColumn }

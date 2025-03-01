@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import { useEffect } from "react"
 
 import Body from "./components/Body"
@@ -7,12 +7,11 @@ import Register from "./components/Register"
 import KanbanBoard from "./components/KanbanBoard"
 import kanbanBoardService from "./services/kanbanBoardService"
 import tokenService from "./services/token"
+import Image from "./components/Image"
 
 import { AxiosResponse } from "axios"
 
 function App() {
-  const navigate = useNavigate()
-
   useEffect(() => {
     // Get the token from local storage when the page loads
     const token: string | null = window.localStorage.getItem("token")
@@ -24,7 +23,6 @@ function App() {
       console.log(isTokenValid)
 
       kanbanBoardService.setToken(token)
-      //navigate("/home")
     } else {
       //navigate("/login")
     }
@@ -34,8 +32,9 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Body />}>
-          <Route path="login" element={<Login />} />
+          <Route index element={<Image />} />
           <Route path="home" element={<KanbanBoard />} />
+          <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
       </Routes>

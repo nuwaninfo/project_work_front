@@ -1,11 +1,12 @@
 import { FC, useState } from "react"
 import loginService from "../services/login"
 import { AxiosResponse } from "axios"
-import Alert from "./Alert"
+import { useNavigate } from "react-router-dom"
 
 const Login: FC = () => {
   const [email, setEmail] = useState<string>("sameerpa1@yahoo.com")
   const [password, setPassword] = useState<string>("abC123@$")
+  const navigate = useNavigate()
 
   const handleLogin = async () => {
     try {
@@ -13,11 +14,11 @@ const Login: FC = () => {
       const user: AxiosResponse | undefined = await loginService.login(
         credentials
       )
-      //const res: AxiosResponse | undefined = await user.login()
-      console.log(user.data.token)
 
       // store the token in local/browser storage
       localStorage.setItem("token", user.data.token)
+
+      navigate("/home")
     } catch (e) {
       console.log(e)
     }

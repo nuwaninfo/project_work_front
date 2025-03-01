@@ -1,23 +1,34 @@
 import { FC } from "react"
+import { Link } from "react-router"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const NavBar: FC = () => {
+  const location = useLocation()
+  const navigate = useNavigate()
   const token: string | null = window.localStorage.getItem("token")
-  console.log(token)
+
+  // Logout functionality
+  const handleLogout = () => {
+    window.localStorage.removeItem("token")
+    navigate("/")
+  }
 
   return (
     <div className="navbar bg-base-300">
       <div className="flex-1">
-        <a className="text-xl btn btn-ghost">The Ultimate Web App</a>
+        <Link to="/" className="text-xl btn btn-ghost">
+          The Ultimate Web App
+        </Link>
       </div>
       <div className="flex-none gap-2">
         {!token ? (
           // Show Login & Register if no token
           <ul className="px-1 menu menu-horizontal">
             <li>
-              <a href="/login">Login</a>
+              <Link to="/login">Login</Link>
             </li>
             <li>
-              <a href="/register">Register</a>
+              <Link to="/register">Register</Link>
             </li>
           </ul>
         ) : (
@@ -48,14 +59,7 @@ const NavBar: FC = () => {
                 <a>Settings</a>
               </li>
               <li>
-                <a
-                  onClick={() => {
-                    window.localStorage.removeItem("token") // Remove token
-                    window.location.reload() // Reload page to update UI
-                  }}
-                >
-                  Logout
-                </a>
+                <a onClick={handleLogout}>Logout</a>
               </li>
             </ul>
           </div>
