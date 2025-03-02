@@ -57,7 +57,7 @@ const Register: FC = () => {
 
   return (
     <div className="flex justify-center my-10">
-      <div className="shadow-xl card bg-base-200 w-96">
+      <div className="shadow-xl card bg-base-200 w-[30rem]">
         <div className="card-body">
           <h2 className="justify-center card-title">Register</h2>
           <label className="flex items-center gap-2 input input-bordered">

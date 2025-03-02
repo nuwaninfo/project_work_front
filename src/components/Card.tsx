@@ -1,10 +1,13 @@
-const Card = () => {
+import React from "react"
+
+interface ICardProps {
+  cardName: string
+}
+
+const Card: React.FC<ICardProps> = ({ cardName }) => {
   return (
-    <div className="w-full text-black bg-gray-100 card">
-      <div className="card-body">
-        <div className="justify-end card-actions"></div>
-        <p>We are using cookies for no reason.</p>
-      </div>
+    <div className="p-4 mb-4 bg-white rounded-lg shadow">
+      <p>{cardName}</p>
     </div>
   )
 }

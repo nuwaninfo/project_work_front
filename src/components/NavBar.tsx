@@ -17,7 +17,7 @@ const NavBar: FC = () => {
     <div className="navbar bg-base-300">
       <div className="flex-1">
         <Link to="/" className="text-xl btn btn-ghost">
-          The Ultimate Web App
+          my kanban board
         </Link>
       </div>
       <div className="flex-none gap-2">
