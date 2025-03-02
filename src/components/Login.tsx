@@ -50,7 +50,7 @@ const Login: FC = () => {
           <label className="flex items-center gap-2 input input-bordered">
             Password
             <input
-              type="text"
+              type="password"
               className="grow"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
