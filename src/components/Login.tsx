@@ -3,6 +3,16 @@ import loginService from "../services/login"
 import { AxiosResponse } from "axios"
 import { useNavigate } from "react-router-dom"
 
+interface ICredentials {
+  email: string
+  password: string
+}
+
+interface IResponse {
+  success: boolean
+  token: string
+}
+
 const Login: FC = () => {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
@@ -10,10 +20,9 @@ const Login: FC = () => {
 
   const handleLogin = async () => {
     try {
-      const credentials = { email, password }
-      const user: AxiosResponse | undefined = await loginService.login(
-        credentials
-      )
+      const credentials: ICredentials = { email, password }
+      const user: AxiosResponse<IResponse> | undefined =
+        await loginService.login(credentials)
 
       // store the token in local/browser storage
       localStorage.setItem("token", user.data.token)
