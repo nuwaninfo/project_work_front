@@ -7,9 +7,18 @@ interface Icredentials {
   password: string
 }
 
+interface IResponse {
+  user: string
+  msg: string
+  status: string
+}
+
 const register = async (credentials: Icredentials): Promise<AxiosResponse> => {
-  const response: AxiosResponse = await axios.post(baseUrl, credentials)
-  return response.data
+  const response: AxiosResponse<IResponse> = await axios.post(
+    baseUrl,
+    credentials
+  )
+  return response
 }
 
 export default { register }

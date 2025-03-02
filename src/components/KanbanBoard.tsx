@@ -101,7 +101,7 @@ const KanbanBoard = () => {
       const newObj: { columnName: string } = { columnName: columnName }
       const response: AxiosResponse<ApiColumnResponse> =
         await columnService.create(newObj)
-      console.log(response.data)
+
       setColumns(response.data.columns)
     } catch (error) {
       console.error("Error during API call:", error)

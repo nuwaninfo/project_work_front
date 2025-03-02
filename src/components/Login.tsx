@@ -4,8 +4,8 @@ import { AxiosResponse } from "axios"
 import { useNavigate } from "react-router-dom"
 
 const Login: FC = () => {
-  const [email, setEmail] = useState<string>("sameerpa1@yahoo.com")
-  const [password, setPassword] = useState<string>("abC123@$")
+  const [email, setEmail] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
   const navigate = useNavigate()
 
   const handleLogin = async () => {

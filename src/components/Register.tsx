@@ -4,11 +4,29 @@ import Alert from "./Alert"
 import validator from "validator"
 import userService from "../services/register"
 
+import { AxiosResponse } from "axios"
+
+interface ICredentials {
+  email: string
+  password: string
+}
+
+interface IResponse {
+  user: string
+  msg: string
+  status: string
+}
+
+interface IError {
+  message: string[]
+  type: string
+}
+
 const Register: FC = () => {
-  const [email, setEmail] = useState<string>("sameerpa2@yahoo.com")
-  const [password, setPassword] = useState<string>("abC123@$")
-  const [reEnterPassword, setReEnterPassword] = useState<string>("abC123@$")
-  const [errors, setErrors] = useState<string[]>([])
+  const [email, setEmail] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+  const [reEnterPassword, setReEnterPassword] = useState<string>("")
+  const [errors, setErrors] = useState<IError>({ message: [], type: "" })
 
   const handleRegister = async () => {
     const newErrors: string[] = []
@@ -41,14 +59,25 @@ const Register: FC = () => {
       newErrors.push("Please retype password corrently.")
     }
 
-    setErrors([...new Set(newErrors)])
-    if (errors.length === 0) {
+    setErrors({ message: [...new Set(newErrors)], type: "error" })
+
+    if (newErrors.length === 0) {
       try {
-        const user = await userService.register({
-          email,
-          password,
-        })
-        console.log(user)
+        const credentials: ICredentials = { email, password }
+        const response: AxiosResponse<IResponse> = await userService.register(
+          credentials
+        )
+        console.log(response.data)
+        if (response.data.status === "success") {
+          setEmail("")
+          setPassword("")
+          setReEnterPassword("")
+          newErrors.push("Registration is successful. Please login.")
+          setErrors({ message: [...new Set(newErrors)], type: "success" })
+        } else if (response.data.status === "error") {
+          newErrors.push(response.data.msg)
+          setErrors({ message: [...new Set(newErrors)], type: "error" })
+        }
       } catch (e) {
         console.log(e)
       }
@@ -92,7 +121,11 @@ const Register: FC = () => {
               Register
             </button>
           </div>
-          {errors.length > 0 ? <Alert errorMsg={errors} /> : ""}
+          {errors.message.length > 0 ? (
+            <Alert errorMsg={errors.message} type={errors.type} />
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>
